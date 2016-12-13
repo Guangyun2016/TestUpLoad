@@ -61,9 +61,12 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 // 相册选取
-                Intent intent1 = new Intent(Intent.ACTION_GET_CONTENT);
-                intent1.setDataAndType(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, "image/*");
-                startActivityForResult(intent1, 103);
+//                Intent intent1 = new Intent(Intent.ACTION_GET_CONTENT);
+//                intent1.setDataAndType(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, "image/*");
+//                startActivityForResult(intent1, 103);
+                Intent photoPickerIntent = new Intent(Intent.ACTION_PICK);
+                photoPickerIntent.setType("image/*");
+                startActivityForResult(photoPickerIntent, 103);
             }
         });
 
@@ -116,12 +119,19 @@ public class MainActivity extends AppCompatActivity {
                     path = cursor.getString(column_index);
                     iv_photo.setImageURI(originalUri); // ?
 
+                    Log.i(TAG, "path--->" + path);
+                    Log.i(TAG, "data.getdata()--->" + data.getData());
+
+
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
                 break;
+
+            default:
+                super.onActivityResult(requestCode, resultCode, data);
+                break;
         }
-        super.onActivityResult(requestCode, resultCode, data);
     }
 
     private void requestPermissions() {
